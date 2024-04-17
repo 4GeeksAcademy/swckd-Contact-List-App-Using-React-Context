@@ -19,7 +19,8 @@ const Layout = () => {
 			<BrowserRouter basename={basename}>
 				<Routes>
 					<Route path="/" element={<ListOfContactsView />} />
-					<Route path="/add-contact" element={<AddNewContactView />} />
+					<Route path="/add-contact/" element={<AddNewContactView />} />
+					<Route path="/add-contact/:id" element={<AddNewContactView />} />
 				</Routes>
 			</BrowserRouter>
 		</div>

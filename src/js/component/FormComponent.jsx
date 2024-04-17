@@ -1,15 +1,49 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
+
 
 const FormComponent = () => {
+    const navigate = useNavigate();
+
+
+    const { id } = useParams();
+
     const { actions } = useContext(Context);
 
     const [contact, setContact] = useState({
         name: "",
-        emailAddress: "",
+        email: "",
         phone: "",
         address: ""
     });
+
+    useEffect(() => {
+
+        if (id) {
+            const getContactById = (id, data) => {
+                const contact = data.find(contact => String(contact.id) === String(id));
+                return contact ? contact : null;
+            }
+
+            const fetchData = async () => {
+                const results = await actions.getSingleContact();
+
+                return results.contacts;
+            }
+
+            const fetchContact = async () => {
+                const data = await fetchData();
+                const contact = getContactById(id, data);
+                console.log(contact);
+                setContact(contact);
+            }
+
+            fetchContact();
+        }
+
+    }, []);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,13 +55,19 @@ const FormComponent = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        actions.postContact(contact);
-        setContact({
-            name: "",
-            emailAddress: "",
-            phone: "",
-            address: ""
-        });
+        if (id) {
+            actions.putContact(id, contact);
+        } else {
+            actions.postContact(contact);
+            setContact({
+                name: "",
+                email: "",
+                phone: "",
+                address: ""
+            });
+        }
+
+        navigate("/");
     };
 
     return (
@@ -43,18 +83,20 @@ const FormComponent = () => {
                         placeholder="Full Name"
                         value={contact.name}
                         onChange={handleChange}
+
                     />
                 </div>
                 <div className="mb-3">
-                    <label className="form-label" htmlFor="emailAddress">Email Address</label>
+                    <label className="form-label" htmlFor="email">Email Address</label>
                     <input
                         className="form-control"
-                        id="emailAddress"
-                        name="emailAddress"
+                        id="email"
+                        name="email"
                         type="email"
                         placeholder="Email Address"
-                        value={contact.emailAddress}
+                        value={contact.email}
                         onChange={handleChange}
+
                     />
                 </div>
                 <div className="mb-3">
@@ -67,6 +109,7 @@ const FormComponent = () => {
                         placeholder="Phone"
                         value={contact.phone}
                         onChange={handleChange}
+
                     />
                 </div>
                 <div className="mb-3">
@@ -79,6 +122,7 @@ const FormComponent = () => {
                         placeholder="Address"
                         value={contact.address}
                         onChange={handleChange}
+
                     />
                 </div>
 

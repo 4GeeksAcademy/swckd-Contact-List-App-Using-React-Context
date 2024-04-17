@@ -1,15 +1,16 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
+import { Link } from "react-router-dom";
 
 const ContactComponent = ({ contact }) => {
     const { actions } = useContext(Context);
 
     const handleDelete = () => {
-        actions.deleteContact(contact.id); // Call the delete action with the contact ID
+        actions.deleteContact(contact.id);
     };
 
     return (
-        <div className="row border d-flex align-items-center mt-1">
+        <div className="row border d-flex align-items-center mt-1" id="{contact.id}">
             <div className="col">
                 <img src="https://concepto.de/wp-content/uploads/2018/08/persona-e1533759204552.jpg" className="img-fluid rounded-circle" style={{ width: "200px" }} alt="Contact"></img>
             </div>
@@ -22,7 +23,7 @@ const ContactComponent = ({ contact }) => {
                 </ul>
             </div>
             <div className="col">
-                <button type="button" className="btn btn-warning">✏️ Edit</button>
+                <Link to={`/add-contact/${contact.id}`} className="btn btn-warning">✏️ Edit</Link>
                 <button type="button" className="btn btn-danger ms-2" onClick={handleDelete}>🗑️ Delete</button>
             </div>
         </div>
