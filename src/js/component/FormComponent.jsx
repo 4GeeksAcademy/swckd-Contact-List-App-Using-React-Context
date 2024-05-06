@@ -6,7 +6,6 @@ import { Navigate, useNavigate, useParams } from "react-router-dom";
 const FormComponent = () => {
     const navigate = useNavigate();
 
-
     const { id } = useParams();
 
     const { actions } = useContext(Context);
@@ -19,7 +18,6 @@ const FormComponent = () => {
     });
 
     useEffect(() => {
-
         if (id) {
             const getContactById = (id, data) => {
                 const contact = data.find(contact => String(contact.id) === String(id));
@@ -35,13 +33,11 @@ const FormComponent = () => {
             const fetchContact = async () => {
                 const data = await fetchData();
                 const contact = getContactById(id, data);
-                console.log(contact);
                 setContact(contact);
             }
 
             fetchContact();
         }
-
     }, []);
 
 
@@ -55,6 +51,7 @@ const FormComponent = () => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         if (id) {
             actions.putContact(id, contact);
         } else {
@@ -83,7 +80,8 @@ const FormComponent = () => {
                         placeholder="Full Name"
                         value={contact.name}
                         onChange={handleChange}
-
+                        maxLength={100}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -96,7 +94,8 @@ const FormComponent = () => {
                         placeholder="Email Address"
                         value={contact.email}
                         onChange={handleChange}
-
+                        maxLength={100}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -109,7 +108,8 @@ const FormComponent = () => {
                         placeholder="Phone"
                         value={contact.phone}
                         onChange={handleChange}
-
+                        maxLength={100}
+                        required
                     />
                 </div>
                 <div className="mb-3">
@@ -122,7 +122,8 @@ const FormComponent = () => {
                         placeholder="Address"
                         value={contact.address}
                         onChange={handleChange}
-
+                        maxLength={100}
+                        required
                     />
                 </div>
 
